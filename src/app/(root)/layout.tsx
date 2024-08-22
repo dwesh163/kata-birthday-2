@@ -4,12 +4,17 @@ import { SessionProvider } from 'next-auth/react';
 import { Session } from 'next-auth';
 import React from 'react';
 import { Header } from '@/components/header';
+import Sidebar from '@/components/sidebar';
 
 export default function RootLayout({ children, session }: { children: ReactNode; session?: Session }) {
 	return (
 		<SessionProvider session={session}>
 			<Header />
-			<main>{children}</main>
+
+			<main className="flex">
+				<Sidebar />
+				{children}
+			</main>
 		</SessionProvider>
 	);
 }
