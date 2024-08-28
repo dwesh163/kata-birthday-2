@@ -114,3 +114,36 @@ export async function createTeam(name: string, ownerId: string) {
 		await mongoose.disconnect();
 	}
 }
+
+export async function addUserToTeam(userId: string, teamId: string, role: string) {
+	try {
+		await connectDB();
+
+		const user = await User.findById(userId).exec();
+		const team = await Team.findOne({
+			$and: [{ _id: teamId }, { 'members.user': userId }],
+			$or: [{ 'members.hasNotification': true }, { 'members.isMuted': false }],
+		});
+
+		if (!user || !team) {
+			return { error: 'User or team not found' };
+		}
+
+		const userAlreadyInTeam = team.members.some((member: { user: { _id: { toString: () => string } } }) => member.user.toString() === user._id.toString());
+		if (userAlreadyInTeam) {
+			return { error: 'User already in team' };
+		}
+
+		team.members.push({ user: user._id, role: role });
+
+		await team.save();
+
+		return team;
+	} catch (error) {
+		console.error('Error while adding user to team:', error);
+		return { error: 'Error while adding user to team', status: 500 };
+	} finally {
+		await mongoose.disconnect();
+	}
+}
+
