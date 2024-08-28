@@ -40,3 +40,51 @@ export async function getTeams(userId: string) {
 		await mongoose.disconnect();
 	}
 }
+
+export async function getTeam(teamId: string, userId: string) {
+	try {
+		await connectDB();
+
+		let team = await Team.findOne({
+			$and: [{ _id: teamId }, { 'members.user': userId }],
+			$or: [{ 'members.hasNotification': true }, { 'members.isMuted': false }],
+		});
+
+		if (!team) {
+			return { error: 'Team not found', status: 404 };
+		}
+
+		const members = await Promise.all(
+			team.members.map(async (member: { user: string; role: string; hasNotification: boolean }) => {
+				const memberUser = await User.findById(member.user);
+				if (!memberUser) return null;
+
+				return {
+					role: member.role,
+					hasNotification: member.hasNotification,
+					name: memberUser.name,
+					id: memberUser._id.toString(),
+					email: memberUser.email,
+				};
+			})
+		);
+
+		const validMembers = members.filter((member) => member !== null);
+
+		const owner = await User.findById(team.owner);
+
+		const result = {
+			id: team._id.toString(),
+			name: team.name,
+			owner: owner.name,
+			members: validMembers,
+		};
+
+		return { result, status: 200 };
+	} catch (error) {
+		console.error('Error while retrieving team:', error);
+		return { error: 'Error while retrieving team', status: 500 };
+	} finally {
+		await mongoose.disconnect();
+	}
+}
