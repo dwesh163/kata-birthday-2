@@ -3,13 +3,8 @@ export type TeamType = {
 	name: string;
 	members: number;
 	owner: string;
-	Authorization: {
-		canEdit: boolean;
-		canDelete: boolean;
-		canView: boolean;
-		canLeave: boolean;
-		isMuted?: boolean;
-	};
+	isMuted?: boolean;
+	role: string;
 };
 
 export type User = {
