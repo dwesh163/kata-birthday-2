@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getMessages } from 'next-intl/server';
 import { Inter } from 'next/font/google';
 import '@/styles/globals.css';
 import { cn } from '@/lib/utils';
@@ -20,14 +22,20 @@ export const metadata: Metadata = {
 	description: 'Never forget a birthday again!',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const locale = await getLocale();
+
+	const messages = await getMessages();
+
 	return (
-		<html lang="en" className="max-h-screen">
-			<body className={cn('antialiased', fontHeading.className, fontBody.className)}>{children}</body>
+		<html lang={locale} style={{ height: '100%' }}>
+			<body className={cn('antialiased h-full', fontHeading.className, fontBody.className)}>
+				<NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+			</body>
 		</html>
 	);
 }
