@@ -1,0 +1,65 @@
+{
+    "Welcome": {
+        "title": "Hello world!",
+        "teams": "Teams",
+        "settings": {
+            "title": "Settings",
+            "upcoming": "Upcoming Birthdays",
+            "reminders": "Birthdays Reminders",
+            "email": "Email Notifications",
+            "push": "Push Notifications"
+        },
+        "upcoming": {
+            "title": "Upcoming Birthdays",
+            "empty": "No upcoming birthdays in the next 30 days."
+        }
+    },
+    "Sidebar": {
+        "overview": "Overview",
+        "teams": "Teams",
+        "birthdays": "Birthdays",
+        "settings": "Settings"
+    },
+    "Teams": {
+        "title": "Teams",
+        "empty": "No teams yet",
+        "create": "Create a new team",
+        "table": {
+            "name": "Name",
+            "members": "Members",
+            "owner": "Owner",
+            "actions": "Actions"
+        },
+        "actions": {
+            "leave": "Leave the team",
+            "delete": "Delete the team",
+            "edit": "Modify the team",
+            "mute": "Mute the team",
+            "unmute": "Unmute the team"
+        }
+    },
+    "Team": {
+        "title": "Team",
+        "empty": "No user yet",
+        "invite": "Invite",
+        "content": {
+            "out": "Outside EPFL",
+            "birthday": "{birthday, date, medium}"
+        },
+        "table": {
+            "name": "Name",
+            "email": "Email",
+            "unit": "Unit",
+            "birthday": "Birthday",
+            "actions": "Actions"
+        },
+        "actions": {
+            "remove": "Remove the user",
+            "edit": "Modify the user",
+            "notification": {
+                "on": "Enable notifications",
+                "off": "Disable notifications"
+            }
+        }
+    }
+}

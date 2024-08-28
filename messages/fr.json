@@ -1,0 +1,65 @@
+{
+    "Welcome": {
+        "title": "Bourjour le monde!",
+        "teams": "Équipes",
+        "settings": {
+            "title": "Paramètres",
+            "upcoming": "Prochains anniversaires",
+            "reminders": "Rappels d'anniversaires",
+            "email": "Notifications par e-mail",
+            "push": "Notifications push"
+        },
+        "upcoming": {
+            "title": "Prochains anniversaires",
+            "empty": "Aucun anniversaire à venir dans les 30 prochains jours."
+        }
+    },
+    "Sidebar": {
+        "overview": "Vue d'ensemble",
+        "teams": "Équipes",
+        "birthdays": "Anniversaires",
+        "settings": "Paramètres"
+    },
+    "Teams": {
+        "title": "Équipes",
+        "empty": "Aucune équipe pour le moment",
+        "create": "Créer",
+        "table": {
+            "name": "Nom",
+            "members": "Membres",
+            "owner": "Propriétaire",
+            "actions": "Actions"
+        },
+        "actions": {
+            "leave": "Quitter l'équipe",
+            "delete": "Supprimer l'équipe",
+            "edit": "Modifier l'équipe",
+            "mute": "Mettre en sourdine",
+            "unmute": "Désactiver la sourdine"
+        }
+    },
+    "Team": {
+        "title": "Équipe",
+        "empty": "Aucun utilisateur pour le moment",
+        "invite": "Inviter",
+        "content": {
+            "birthday": "{birthday, date, medium}",
+            "out": "Hors EPFL"
+        },
+        "table": {
+            "name": "Nom",
+            "email": "Email",
+            "unit": "Unité",
+            "birthday": "Anniversaire",
+            "actions": "Actions"
+        },
+        "actions": {
+            "remove": "Supprimer l'utilisateur",
+            "edit": "Modifier l'utilisateur",
+            "notification": {
+                "on": "Activer les notifications",
+                "off": "Désactiver les notifications"
+            }
+        }
+    }
+}
