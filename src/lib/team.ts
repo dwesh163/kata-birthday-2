@@ -147,3 +147,32 @@ export async function addUserToTeam(userId: string, teamId: string, role: string
 	}
 }
 
+export async function removeUserFromTeam(userId: string, teamId: string) {
+	try {
+		await connectDB();
+
+		const team = await Team.findOne({
+			$and: [{ _id: teamId }, { 'members.user': userId }],
+			$or: [{ 'members.hasNotification': true }, { 'members.isMuted': false }],
+		});
+
+		if (!team) {
+			return { error: 'Team not found' };
+		}
+
+		const updatedMembers = team.members.filter((member: { user: { _id: { toString: () => string } } }) => member.user.toString() !== userId);
+		if (updatedMembers.length === team.members.length) {
+			return { error: 'User not found in team' };
+		}
+
+		team.members = updatedMembers;
+
+		await team.save();
+		return team;
+	} catch (error) {
+		console.error('Error while removing user from team:', error);
+		return { error: 'Error while removing user from team', status: 500 };
+	} finally {
+		await mongoose.disconnect();
+	}
+}
