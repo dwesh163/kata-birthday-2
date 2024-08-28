@@ -88,3 +88,29 @@ export async function getTeam(teamId: string, userId: string) {
 		await mongoose.disconnect();
 	}
 }
+
+export async function createTeam(name: string, ownerId: string) {
+	try {
+		await connectDB();
+
+		const owner = await User.findById(ownerId).exec();
+		if (!owner) {
+			return { error: 'Owner not found' };
+		}
+
+		const team = new Team({
+			name,
+			owner: owner._id,
+			members: [{ user: owner._id, role: 'superAdmin' }],
+		});
+
+		await team.save();
+
+		return team;
+	} catch (error) {
+		console.error('Error while creating team:', error);
+		return { error: 'Error while creating team', status: 500 };
+	} finally {
+		await mongoose.disconnect();
+	}
+}
