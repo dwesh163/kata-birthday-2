@@ -5,13 +5,13 @@ const { Schema } = mongoose;
 const TeamSchema = new Schema({
 	name: String,
 	owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-
 	members: [
 		{
 			user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 			Authorization: { type: Number, default: 2 },
 		},
 	],
+	createdAt: { type: Date, default: Date.now },
 });
 
 export const Team = mongoose.models.Team || mongoose.model('Team', TeamSchema);
