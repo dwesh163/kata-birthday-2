@@ -8,14 +8,20 @@ export type TeamType = {
 };
 
 export type User = {
-	id: number;
+	id: string;
 	name: string;
 	email: string;
 	birthday: Date;
-	Authorization: {
-		hasNotification: boolean;
-	};
-	unit?: string;
-	image?: string;
-	sciper?: string;
+	username: String;
+	jobTitle: String;
+	unit: String;
+	sciper: String;
+	image: String;
 };
+
+declare module 'next-auth' {
+	interface Session {
+		user: User;
+		expires: string;
+	}
+}
