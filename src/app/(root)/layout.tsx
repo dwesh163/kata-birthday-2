@@ -6,7 +6,7 @@ import React from 'react';
 import { Header } from '@/components/header';
 import Sidebar from '@/components/sidebar';
 
-export default async function RootLayout({ children, session }: { children: ReactNode; session?: Session }) {
+export default function RootLayout({ children, session }: { children: ReactNode; session?: Session }) {
 	return (
 		<SessionProvider session={session}>
 			<Header />
