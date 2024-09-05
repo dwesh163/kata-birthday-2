@@ -10,7 +10,7 @@ export default function RootLayout({ children, session }: { children: ReactNode;
 	return (
 		<SessionProvider session={session}>
 			<Header />
-			<main className="flex sm:h-[calc(100%-90px)] ">
+			<main className="flex sm:h-[calc(100%-90px)]">
 				<Sidebar />
 				{children}
 			</main>
