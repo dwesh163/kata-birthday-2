@@ -7,6 +7,13 @@ export type TeamsType = {
 	role: string;
 };
 
+export type TeamType = {
+	id: string;
+	name: string;
+	owner: string;
+	members: User[];
+};
+
 export type User = {
 	id: string;
 	name: string;
@@ -17,6 +24,12 @@ export type User = {
 	unit: String;
 	sciper: String;
 	image: String;
+	hasNotification?: boolean;
+};
+
+export type ErrorType = {
+	error: string;
+	status: number;
 };
 
 declare module 'next-auth' {
