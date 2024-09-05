@@ -7,8 +7,15 @@ export async function getTeams(userId: string) {
 	try {
 		await connectDB();
 
+		const user = await User.findOne({ id: userId });
+
 		const teams = await Team.find({
-			$and: [{ 'members.user': userId }, { 'members.hasNotification': true }],
+			members: {
+				$elemMatch: {
+					user: user._id,
+					hasNotification: true,
+				},
+			},
 		})
 			.select('name members owner')
 			.populate({
@@ -16,13 +23,19 @@ export async function getTeams(userId: string) {
 				select: 'name',
 			});
 
+		if (teams.length === 0) {
+			return { error: 'No teams found', status: 404 };
+		}
+
 		const userTeams = await Promise.all(
 			teams.map(async (team) => {
-				const member = team.members.find((member: { user: { _id: { toString: () => string } } }) => member.user._id.toString() === userId);
+				await connectDB();
+
+				const member = team.members.find((member: { user: { _id: { toString: () => string } } }) => member.user._id.toString() === user._id.toString());
 				const owner = await User.findById(team.owner);
 
 				return {
-					id: team._id,
+					id: team._id.toString(),
 					name: team.name,
 					owner: owner ? owner.name : '',
 					members: team.members.length,
