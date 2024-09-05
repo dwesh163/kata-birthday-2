@@ -117,6 +117,12 @@ export async function createTeam(name: string, ownerId: string) {
 			return { error: 'Owner not found' };
 		}
 
+		const existingTeam = await Team.findOne({ name: name });
+
+		if (existingTeam && existingTeam.createdAt > new Date().getTime() - 1000 * 60 * 60 * 24) {
+			return { error: 'Team already exists' };
+		}
+
 		const team = new Team({
 			name,
 			owner: owner._id,
