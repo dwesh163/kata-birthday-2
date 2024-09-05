@@ -112,7 +112,7 @@ export async function createTeam(name: string, ownerId: string) {
 	try {
 		await connectDB();
 
-		const owner = await User.findById(ownerId).exec();
+		const owner = await User.findOne({ id: ownerId });
 		if (!owner) {
 			return { error: 'Owner not found' };
 		}
