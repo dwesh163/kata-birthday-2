@@ -7,7 +7,7 @@ export function UserProfile() {
 	return (
 		<div className="flex space-x-1 -mt-0.5 select-none">
 			<UserRound />
-			{status === 'loading' ? <p>Loading...</p> : <p className="text-black">{session?.user?.name}</p>}
+			{status === 'loading' ? <p>Loading...</p> : <p className="text-black min-w-24">{session?.user?.name}</p>}
 		</div>
 	);
 }
