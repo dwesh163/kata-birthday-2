@@ -58,9 +58,15 @@ export async function getTeam(teamId: string, userId: string) {
 	try {
 		await connectDB();
 
+		const user = await User.findOne({ id: userId });
 		let team = await Team.findOne({
-			$and: [{ _id: teamId }, { 'members.user': userId }],
-			$or: [{ 'members.hasNotification': true }, { 'members.isMuted': false }],
+			_id: teamId,
+			members: {
+				$elemMatch: {
+					user: user._id,
+					hasNotification: true,
+				},
+			},
 		});
 
 		if (!team) {
@@ -78,12 +84,12 @@ export async function getTeam(teamId: string, userId: string) {
 					name: memberUser.name,
 					id: memberUser._id.toString(),
 					email: memberUser.email,
+					unit: memberUser.unit,
 				};
 			})
 		);
 
 		const validMembers = members.filter((member) => member !== null);
-
 		const owner = await User.findById(team.owner);
 
 		const result = {
@@ -93,7 +99,7 @@ export async function getTeam(teamId: string, userId: string) {
 			members: validMembers,
 		};
 
-		return { result, status: 200 };
+		return result;
 	} catch (error) {
 		console.error('Error while retrieving team:', error);
 		return { error: 'Error while retrieving team', status: 500 };
