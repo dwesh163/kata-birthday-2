@@ -14,7 +14,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			async profile(profile, tokens) {
 				const userProfile = await fetchUserProfile(tokens.access_token as string);
 				if (userProfile) {
-					const image = await fetchProfileImage(tokens.access_token as string);
+					const image = await fetchProfileImage(tokens.access_token as string, userProfile.mail || userProfile.userPrincipalName);
 					return {
 						sciper: userProfile.employeeId,
 						id: userProfile.id,
