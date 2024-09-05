@@ -1,9 +1,9 @@
-import NextAuth, { Session, User as authUser } from 'next-auth';
+import NextAuth, { Session } from 'next-auth';
 import MicrosoftEntraID from '@auth/core/providers/microsoft-entra-id';
-import { headers } from 'next/headers';
 import connectDB from './mongo';
 import { User } from '@/models/User';
 import mongoose from 'mongoose';
+import { fetchProfileImage, fetchUserProfile } from './user';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
 	providers: [
@@ -12,37 +12,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			clientSecret: process.env.AUTH_MICROSOFT_ENTRA_ID_SECRET,
 			tenantId: process.env.AUTH_MICROSOFT_ENTRA_ID_TENANT_ID,
 			async profile(profile, tokens) {
-				async function getProfileImage() {
-					const response = await fetch(`https://graph.microsoft.com/v1.0/me/photos/48x48/$value`, { headers: { Authorization: `Bearer ${tokens.access_token}` } });
-
-					if (response.ok && typeof Buffer !== 'undefined') {
-						try {
-							const pictureBuffer = await response.arrayBuffer();
-							const pictureBase64 = Buffer.from(pictureBuffer).toString('base64');
-							return `data:image/jpeg;base64,${pictureBase64}`;
-						} catch {}
-					}
-				}
-
-				const response = await fetch(`https://graph.microsoft.com/v1.0/me?$select=employeeId,id,displayName,jobTitle,mail,surname,userPrincipalName,birthday,companyName,joinedTeams`, { headers: { Authorization: `Bearer ${tokens.access_token}` } });
-
-				if (response.ok) {
-					const data = await response.json();
-					console.log(data);
+				const userProfile = await fetchUserProfile(tokens.access_token as string);
+				if (userProfile) {
+					const image = await fetchProfileImage(tokens.access_token as string);
 					return {
-						sciper: data.employeeId,
-						id: data.id,
-						name: data.displayName,
-						jobTitle: data.jobTitle,
-						email: data.mail == null ? data.userPrincipalName : data.mail,
-						username: data.surname.toLowerCase(),
-						birthday: data.birthday,
-						unit: data.joinedTeams ? data.joinedTeams[0] : data.companyName === 'EPFL' ? 'EPFL' : 'Hors EPFL',
-						image: await getProfileImage(),
+						sciper: userProfile.employeeId,
+						id: userProfile.id,
+						name: userProfile.displayName,
+						jobTitle: userProfile.jobTitle,
+						email: userProfile.mail || userProfile.userPrincipalName,
+						username: userProfile.surname.toLowerCase(),
+						birthday: userProfile.birthday,
+						unit: userProfile.department ? userProfile.department : userProfile.companyName === 'EPFL' ? 'EPFL' : 'Hors EPFL',
+						image,
 					};
-				} else {
-					return {};
 				}
+				return {};
 			},
 		}),
 	],
@@ -60,14 +45,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			} else {
 				console.log('User already exists');
 			}
-
 			await mongoose.disconnect();
 
 			return true;
 		},
 		async session({ session }: { session: Session }): Promise<Session> {
 			await connectDB();
-
 			const dbUser = await User.findOne({ email: session.user.email });
 
 			if (dbUser) {
@@ -83,10 +66,31 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 					image: dbUser.image as string,
 				};
 			}
-
 			await mongoose.disconnect();
 
 			return session;
 		},
 	},
 });
+
+export async function getAccessToken(): Promise<string> {
+	const response = await fetch(`https://login.microsoftonline.com/${process.env.AUTH_MICROSOFT_ENTRA_ID_TENANT_ID}/oauth2/v2.0/token`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+		},
+		body: new URLSearchParams({
+			grant_type: 'client_credentials',
+			client_id: process.env.AUTH_MICROSOFT_ENTRA_ID_ID as string,
+			client_secret: process.env.AUTH_MICROSOFT_ENTRA_ID_SECRET as string,
+			scope: 'https://graph.microsoft.com/.default',
+		}),
+	});
+
+	if (!response.ok) {
+		throw new Error(`Failed to get access token: ${response.statusText}`);
+	}
+
+	const data = await response.json();
+	return data.access_token;
+}
