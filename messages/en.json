@@ -42,6 +42,7 @@
         "title": "Team",
         "empty": "No user yet",
         "invite": "Invite",
+        "owned": "Owned by {owner}",
         "content": {
             "out": "Outside EPFL",
             "birthday": "{birthday, date, medium}"
@@ -61,5 +62,44 @@
                 "off": "Disable notifications"
             }
         }
+    },
+    "NewTeam": {
+        "title": "Create a new team",
+        "name": {
+            "label": "Name",
+            "placeholder": "Team name"
+        },
+        "table": {
+            "name": "Name",
+            "email": "Email",
+            "unit": "Unit",
+            "birthday": "Birthday",
+            "actions": {
+                "title": "Actions",
+                "remove": "Remove the user"
+            },
+            "import": {
+                "one": "Import",
+                "unit": "Import from Unit"
+            }
+        },
+        "import": {
+            "one": {
+                "title": "Import",
+                "description": "Select the user you want to import.",
+                "submit": "Import",
+                "placeholder": "Search user...",
+                "select": "Select"
+            },
+            "unit": {
+                "title": "Import from Unit",
+                "description": "Select the unit you want to import users from.",
+                "submit": "Import",
+                "placeholder": "Search units...",
+                "select": "Select"
+            }
+        },
+        "description": "Description",
+        "submit": "Create"
     }
 }

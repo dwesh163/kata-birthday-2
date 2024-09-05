@@ -42,6 +42,7 @@
         "title": "Équipe",
         "empty": "Aucun utilisateur pour le moment",
         "invite": "Inviter",
+        "owned": "Détenu par {owner}",
         "content": {
             "birthday": "{birthday, date, medium}",
             "out": "Hors EPFL"
@@ -61,5 +62,44 @@
                 "off": "Désactiver les notifications"
             }
         }
+    },
+    "NewTeam": {
+        "title": "Nouvelle équipe",
+        "name": {
+            "label": "Nom",
+            "placeholder": "Nom de l'équipe"
+        },
+        "table": {
+            "name": "Nom",
+            "email": "Email",
+            "unit": "Unité",
+            "birthday": "Anniversaire",
+            "actions": {
+                "title": "Actions",
+                "remove": "Supprimer l'utilisateur"
+            },
+            "import": {
+                "one": "Importer",
+                "unit": "Importer depuis une unité"
+            }
+        },
+        "import": {
+            "one": {
+                "title": "Importer un utilisateur",
+                "description": "Sélectionnez l'utilisateur que vous souhaitez importer.",
+                "submit": "Importer",
+                "placeholder": "Rechercher un utilisateur...",
+                "select": "Sélectionner"
+            },
+            "unit": {
+                "title": "Importer depuis une unité",
+                "description": "Sélectionnez l'unité à partir de laquelle vous souhaitez importer des utilisateurs.",
+                "submit": "Importer",
+                "placeholder": "Rechercher des unités...",
+                "select": "Sélectionner"
+            }
+        },
+        "description": "Créez une nouvelle équipe en ajoutant des membres.",
+        "submit": "Créer l'équipe"
     }
 }
