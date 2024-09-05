@@ -2,20 +2,17 @@
 import Teams from '@/components/teams';
 import { auth } from '@/lib/auth';
 import { getTeams } from '@/lib/team';
-import { TeamsType } from '@/types';
+import { ErrorType, TeamsType } from '@/types';
 import { redirect } from 'next/navigation';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+import Link from 'next/link';
 
 export default async function TeamsPage() {
 	const session = await auth();
 	if (!session) {
 		redirect('/login');
 	}
-	const teams = (await getTeams(session?.user?.id as string)) as TeamsType[];
-
-	if (!teams) {
-		return <div>No teams found</div>;
-	}
+	const teams = (await getTeams(session?.user?.id as string)) as TeamsType[] | ErrorType;
 
 	return (
 		<div className="w-full">
@@ -30,7 +27,14 @@ export default async function TeamsPage() {
 					</BreadcrumbItem>
 				</BreadcrumbList>
 			</Breadcrumb>
-			<Teams teams={teams} />
+			{Array.isArray(teams) ? (
+				<Teams teams={teams} />
+			) : (
+				<div>
+					{teams.error}
+					<Link href="/teams/new">Create a team</Link>
+				</div>
+			)}
 		</div>
 	);
 }
