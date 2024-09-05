@@ -29,68 +29,74 @@ export default function Teams({ teams }: { teams: TeamsType[] }) {
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					{teams.map((team) => (
-						<TableRow key={team.id} className="hover:bg-white">
-							<TableCell className="font-medium">{team.name}</TableCell>
-							<TableCell className="text-gray-700">{team.owner}</TableCell>
-							<TableCell>{team.members}</TableCell>
-							<TableCell>
-								<div className="flex items-center gap-2">
-									<TooltipProvider delayDuration={300}>
-										<Tooltip>
-											<TooltipTrigger asChild>
-												<Button variant="outline" size="icon">
-													{team.isMuted ? <BellOff className="h-4 w-4" /> : <Bell className="h-4 w-4" />}
-												</Button>
-											</TooltipTrigger>
-											<TooltipContent>{team.isMuted ? <p>{t('actions.unmute')}</p> : <p>{t('actions.mute')}</p>}</TooltipContent>
-										</Tooltip>
-									</TooltipProvider>
-									<TooltipProvider delayDuration={300}>
-										<Tooltip>
-											<TooltipTrigger asChild>
-												<Button variant="outline" size="icon">
-													<LogOut className="h-4 w-4" />
-												</Button>
-											</TooltipTrigger>
-											<TooltipContent>
-												<p>{t('actions.leave')}</p>
-											</TooltipContent>
-										</Tooltip>
-									</TooltipProvider>
-									{team.role === 'admin' ||
-										(team.role === 'superAdmin' && (
-											<TooltipProvider delayDuration={300}>
-												<Tooltip>
-													<TooltipTrigger asChild>
-														<Button variant="outline" size="icon" onClick={() => handleRowClick(team.id)}>
-															<FilePen className="h-4 w-4" />
-														</Button>
-													</TooltipTrigger>
-													<TooltipContent>
-														<p>{t('actions.edit')}</p>
-													</TooltipContent>
-												</Tooltip>
-											</TooltipProvider>
-										))}
-									{team.role === 'superAdmin' && (
+					{teams.length !== 0 ? (
+						teams.map((team) => (
+							<TableRow key={team.id} className="hover:bg-white">
+								<TableCell className="font-medium">{team.name}</TableCell>
+								<TableCell className="text-gray-700">{team.owner}</TableCell>
+								<TableCell>{team.members}</TableCell>
+								<TableCell>
+									<div className="flex items-center gap-2">
 										<TooltipProvider delayDuration={300}>
 											<Tooltip>
 												<TooltipTrigger asChild>
 													<Button variant="outline" size="icon">
-														<Trash className="h-4 w-4" />
+														{team.isMuted ? <BellOff className="h-4 w-4" /> : <Bell className="h-4 w-4" />}
+													</Button>
+												</TooltipTrigger>
+												<TooltipContent>{team.isMuted ? <p>{t('actions.unmute')}</p> : <p>{t('actions.mute')}</p>}</TooltipContent>
+											</Tooltip>
+										</TooltipProvider>
+										<TooltipProvider delayDuration={300}>
+											<Tooltip>
+												<TooltipTrigger asChild>
+													<Button variant="outline" size="icon">
+														<LogOut className="h-4 w-4" />
 													</Button>
 												</TooltipTrigger>
 												<TooltipContent>
-													<p>{t('actions.delete')}</p>
+													<p>{t('actions.leave')}</p>
 												</TooltipContent>
 											</Tooltip>
 										</TooltipProvider>
-									)}
-								</div>
-							</TableCell>
+										{team.role === 'admin' ||
+											(team.role === 'superAdmin' && (
+												<TooltipProvider delayDuration={300}>
+													<Tooltip>
+														<TooltipTrigger asChild>
+															<Button variant="outline" size="icon" onClick={() => handleRowClick(team.id)}>
+																<FilePen className="h-4 w-4" />
+															</Button>
+														</TooltipTrigger>
+														<TooltipContent>
+															<p>{t('actions.edit')}</p>
+														</TooltipContent>
+													</Tooltip>
+												</TooltipProvider>
+											))}
+										{team.role === 'superAdmin' && (
+											<TooltipProvider delayDuration={300}>
+												<Tooltip>
+													<TooltipTrigger asChild>
+														<Button variant="outline" size="icon">
+															<Trash className="h-4 w-4" />
+														</Button>
+													</TooltipTrigger>
+													<TooltipContent>
+														<p>{t('actions.delete')}</p>
+													</TooltipContent>
+												</Tooltip>
+											</TooltipProvider>
+										)}
+									</div>
+								</TableCell>
+							</TableRow>
+						))
+					) : (
+						<TableRow>
+							<TableCell>{t('empty')}</TableCell>
 						</TableRow>
-					))}
+					)}
 				</TableBody>
 			</Table>
 		</div>
