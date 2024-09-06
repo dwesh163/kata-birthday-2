@@ -37,7 +37,8 @@ export default function Teams({ teams }: { teams: TeamsType[] | ErrorType }) {
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					{Array.isArray(teams) && teams.length !== 0 ? (
+					{Array.isArray(teams) &&
+						teams.length !== 0 &&
 						teams.map((team) => (
 							<TableRow key={team.id} className="hover:bg-white">
 								<TableCell className="font-medium">{team.name}</TableCell>
@@ -98,18 +99,10 @@ export default function Teams({ teams }: { teams: TeamsType[] | ErrorType }) {
 									</div>
 								</TableCell>
 							</TableRow>
-						))
-					) : (
-						<TableRow>
-							<TableCell>{t('empty')}</TableCell>
-							{/* <div>
-								{teams.error}
-								<Link href="/teams/new">Create a team</Link>
-							</div> */}
-						</TableRow>
-					)}
+						))}
 				</TableBody>
 			</Table>
+			{!Array.isArray(teams) && <div className="w-full text-center p-3">{t('empty')}</div>}
 		</div>
 	);
 }
