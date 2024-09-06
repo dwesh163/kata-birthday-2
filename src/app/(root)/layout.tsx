@@ -5,6 +5,7 @@ import { Session } from 'next-auth';
 import React from 'react';
 import { Header } from '@/components/header';
 import Sidebar from '@/components/sidebar';
+import { Toaster } from '@/components/ui/sonner';
 
 export default function RootLayout({ children, session }: { children: ReactNode; session?: Session }) {
 	return (
@@ -14,6 +15,7 @@ export default function RootLayout({ children, session }: { children: ReactNode;
 				<Sidebar />
 				{children}
 			</main>
+			<Toaster />
 		</SessionProvider>
 	);
 }
