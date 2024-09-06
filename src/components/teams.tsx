@@ -2,12 +2,12 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useTranslations } from 'next-intl';
-import { TeamsType } from '@/types';
+import { ErrorType, TeamsType } from '@/types';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Bell, BellOff, FilePen, LogOut, Trash } from 'lucide-react';
+import { Bell, BellOff, FilePen, LogOut, Plus, Trash } from 'lucide-react';
 
-export default function Teams({ teams }: { teams: TeamsType[] }) {
+export default function Teams({ teams }: { teams: TeamsType[] | ErrorType }) {
 	const router = useRouter();
 	const t = useTranslations('Teams');
 
@@ -17,9 +17,17 @@ export default function Teams({ teams }: { teams: TeamsType[] }) {
 
 	return (
 		<div className="flex-1 bg-background p-6 md:p-10 md:pt-2 pt-0">
-			<Button onClick={() => router.push('/teams/new')}>{t('create')}</Button>
-
-			<Table>
+			<div className="flex justify-between items-center -mt-5">
+				<div>
+					<h1 className="font-semibold text-[30px]">{t('subtitle')}</h1>
+					<p className="text-sm">{t('description')}</p>
+				</div>
+				<Button onClick={() => router.push('/teams/new')}>
+					<Plus className="mr-1 h-4 w-4" />
+					{t('create')}
+				</Button>
+			</div>
+			<Table className="mt-5">
 				<TableHeader>
 					<TableRow className="hover:bg-white">
 						<TableHead className="w-[150px]">{t('table.name')}</TableHead>
@@ -29,7 +37,7 @@ export default function Teams({ teams }: { teams: TeamsType[] }) {
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					{teams.length !== 0 ? (
+					{Array.isArray(teams) && teams.length !== 0 ? (
 						teams.map((team) => (
 							<TableRow key={team.id} className="hover:bg-white">
 								<TableCell className="font-medium">{team.name}</TableCell>
@@ -59,22 +67,21 @@ export default function Teams({ teams }: { teams: TeamsType[] }) {
 												</TooltipContent>
 											</Tooltip>
 										</TooltipProvider>
-										{team.role === 'admin' ||
-											(team.role === 'superAdmin' && (
-												<TooltipProvider delayDuration={300}>
-													<Tooltip>
-														<TooltipTrigger asChild>
-															<Button variant="outline" size="icon" onClick={() => handleRowClick(team.id)}>
-																<FilePen className="h-4 w-4" />
-															</Button>
-														</TooltipTrigger>
-														<TooltipContent>
-															<p>{t('actions.edit')}</p>
-														</TooltipContent>
-													</Tooltip>
-												</TooltipProvider>
-											))}
-										{team.role === 'superAdmin' && (
+										{team.role.includes('admin') && (
+											<TooltipProvider delayDuration={300}>
+												<Tooltip>
+													<TooltipTrigger asChild>
+														<Button variant="outline" size="icon" onClick={() => handleRowClick(team.id)}>
+															<FilePen className="h-4 w-4" />
+														</Button>
+													</TooltipTrigger>
+													<TooltipContent>
+														<p>{t('actions.edit')}</p>
+													</TooltipContent>
+												</Tooltip>
+											</TooltipProvider>
+										)}
+										{team.role === 'superadmin' && (
 											<TooltipProvider delayDuration={300}>
 												<Tooltip>
 													<TooltipTrigger asChild>
@@ -95,6 +102,10 @@ export default function Teams({ teams }: { teams: TeamsType[] }) {
 					) : (
 						<TableRow>
 							<TableCell>{t('empty')}</TableCell>
+							{/* <div>
+								{teams.error}
+								<Link href="/teams/new">Create a team</Link>
+							</div> */}
 						</TableRow>
 					)}
 				</TableBody>
