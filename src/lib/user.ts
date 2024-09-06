@@ -1,6 +1,6 @@
 export async function fetchUserProfile(accessToken: string) {
 	try {
-		const response = await fetch('https://graph.microsoft.com/v1.0/me?$select=employeeId,id,displayName,jobTitle,mail,surname,userPrincipalName,birthday,companyName,joinedTeams,department', {
+		const response = await fetch(`${process.env.MICROSOFT_GRAPH_API_URL}/me?$select=employeeId,id,displayName,jobTitle,mail,surname,userPrincipalName,birthday,companyName,joinedTeams,department`, {
 			headers: { Authorization: `Bearer ${accessToken}` },
 		});
 
