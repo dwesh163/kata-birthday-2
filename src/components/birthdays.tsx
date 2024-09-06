@@ -12,10 +12,10 @@ export default function Birthdays({ birthdays }: { birthdays: BirthdayType[] }) 
 			<Table className="mt-5">
 				<TableHeader>
 					<TableRow className="hover:bg-white">
-						<TableHead className="w-[25%]">{t('table.name')}</TableHead>
-						<TableHead className="w-max">{t('table.birthday')}</TableHead>
-						<TableHead className="w-3/5">{t('table.unit')}</TableHead>
-						<TableHead>{t('table.job')}</TableHead>
+						<TableHead className="w-[20%]">{t('table.name')}</TableHead>
+						<TableHead className="w-[200px]">{t('table.birthday')}</TableHead>
+						<TableHead className="">{t('table.unit')}</TableHead>
+						<TableHead className="">{t('table.job')}</TableHead>
 					</TableRow>
 				</TableHeader>
 				{birthdays.length !== 0 && (
