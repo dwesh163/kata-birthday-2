@@ -116,5 +116,16 @@
         "error": "An error occurred while saving your settings.",
         "success": "Your settings have been saved.",
         "save": "Save"
+    },
+    "Birthdays": {
+        "title": "Birthdays",
+        "empty": "No birthdays yet",
+        "description": "All the birthdays of the team members.",
+        "table": {
+            "name": "Name",
+            "birthday": "Birthday",
+            "unit": "Unit",
+            "job": "Job"
+        }
     }
 }

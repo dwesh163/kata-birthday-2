@@ -116,5 +116,16 @@
         "error": "Une erreur s'est produite lors de l'enregistrement de vos paramètres.",
         "success": "Vos paramètres ont été enregistrés avec succès.",
         "save": "Enregistrer"
+    },
+    "Birthdays": {
+        "title": "Anniversaires",
+        "empty": "Aucun anniversaire.",
+        "description": "Tous les anniversaires.",
+        "table": {
+            "name": "Nom",
+            "job": "Fonction",
+            "unit": "Unité",
+            "birthday": "Anniversaire"
+        }
     }
 }
