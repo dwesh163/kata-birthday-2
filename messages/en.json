@@ -109,5 +109,11 @@
         },
         "description": "Description",
         "submit": "Create"
+    },
+    "Settings": {
+        "contact": "Contact Information",
+        "send": "Send at",
+        "error": "An error occurred while saving your settings.",
+        "success": "Your settings have been saved."
     }
 }

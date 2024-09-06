@@ -109,5 +109,11 @@
         },
         "description": "Créez une nouvelle équipe en ajoutant des membres.",
         "submit": "Créer l'équipe"
+    },
+    "Settings": {
+        "contact": "Informations de contact",
+        "send": "Envoyer à",
+        "error": "Une erreur s'est produite lors de l'enregistrement de vos paramètres.",
+        "success": "Vos paramètres ont été enregistrés avec succès."
     }
 }
