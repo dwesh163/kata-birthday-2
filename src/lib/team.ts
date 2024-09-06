@@ -136,7 +136,6 @@ export async function createTeam(name: string, ownerId: string) {
 		console.error('Error while creating team:', error);
 		return { error: 'Error while creating team', status: 500 };
 	} finally {
-		await mongoose.disconnect();
 	}
 }
 
@@ -144,10 +143,15 @@ export async function addUserToTeam(userId: string, teamId: string, role: string
 	try {
 		await connectDB();
 
-		const user = await User.findById(userId).exec();
+		const user = await User.findById(userId);
 		const team = await Team.findOne({
-			$and: [{ _id: teamId }, { 'members.user': userId }],
-			$or: [{ 'members.hasNotification': true }, { 'members.isMuted': false }],
+			_id: teamId,
+			members: {
+				$elemMatch: {
+					user: user._id,
+					role: 'admin',
+				},
+			},
 		});
 
 		if (!user || !team) {
