@@ -12,7 +12,7 @@ export default function Team({ team, users }: { team: { name: string; owner: str
 	const t = useTranslations('Team');
 
 	return (
-		<div className="flex-1 bg-background p-6 md:p-10 md:pt-4 pt-2">
+		<div className="flex-1 bg-background p-6 md:p-10 md:pt-4 pt-1">
 			<h1 className="font-semibold text-[30px]">{team.name}</h1>
 			<p className="text-sm">{t('owned', { owner: team.owner })}</p>
 			<Table className="mt-5">
