@@ -28,6 +28,21 @@ export type User = {
 	role?: string;
 };
 
+export type SettingsType = {
+	email: {
+		notification: boolean;
+		sendAt: string;
+	};
+	telegram: {
+		notification: boolean;
+		sendAt: string;
+		chatId: string;
+	};
+	push: {
+		notification: boolean;
+		sendAt: string;
+	};
+};
 export type ErrorType = {
 	error: string;
 	status: number;
