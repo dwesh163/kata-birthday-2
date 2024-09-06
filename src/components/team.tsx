@@ -3,13 +3,17 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useTranslations } from 'next-intl';
 import { User } from '@/types';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Bell, BellOff, FilePen, LogOut, Trash } from 'lucide-react';
 
 export default function Team({ team, users }: { team: { name: string; owner: string }; users: User[] }) {
 	const t = useTranslations('Team');
+	const roles = ['superadmin', 'admin', 'member'];
+
+	const handleRoleChange = (sciper: string, role: string) => {
+		console.log(role);
+	};
 
 	return (
 		<div className="flex-1 bg-background p-6 md:p-10 md:pt-4 pt-1">
@@ -21,6 +25,7 @@ export default function Team({ team, users }: { team: { name: string; owner: str
 						<TableHead className="w-[25%]">{t('table.name')}</TableHead>
 						<TableHead className="w-max">{t('table.birthday')}</TableHead>
 						<TableHead className="w-3/5">{t('table.unit')}</TableHead>
+						<TableHead>{t('table.role')}</TableHead>
 						<TableHead className="w-[150px]">{t('table.actions')}</TableHead>
 					</TableRow>
 				</TableHeader>
@@ -33,6 +38,21 @@ export default function Team({ team, users }: { team: { name: string; owner: str
 								<TableCell className="w-max font-medium">{user.name}</TableCell>
 								<TableCell>{t('content.birthday', { birthday: new Date(user.birthday) })}</TableCell>
 								<TableCell className="text-gray-700">{user.unit ? user.unit : t('content.out')}</TableCell>
+								<TableCell>
+									<Select onValueChange={(value) => handleRoleChange(user.sciper, value)} value={user.role}>
+										<SelectTrigger className="w-[200px]">
+											<SelectValue placeholder={t(`roles.${user.role}`)} />
+										</SelectTrigger>
+
+										<SelectContent>
+											{roles.map((role) => (
+												<SelectItem key={role} value={role}>
+													{t(`roles.${role}`)}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+								</TableCell>
 								<TableCell>
 									<div className="flex items-center gap-2">
 										<TooltipProvider delayDuration={300}>

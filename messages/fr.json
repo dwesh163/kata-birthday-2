@@ -53,6 +53,7 @@
             "name": "Nom",
             "email": "Email",
             "unit": "Unité",
+            "role": "Rôle",
             "birthday": "Anniversaire",
             "actions": "Actions"
         },
@@ -63,6 +64,11 @@
                 "on": "Activer les notifications",
                 "off": "Désactiver les notifications"
             }
+        },
+        "roles": {
+            "superadmin": "Super administrateur",
+            "admin": "Administrateur",
+            "member": "Membre"
         }
     },
     "NewTeam": {
