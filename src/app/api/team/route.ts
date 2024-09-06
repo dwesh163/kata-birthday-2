@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
 					return NextResponse.json({ message: 'User not found' }, { status: 404 });
 				}
 
-				const newUser = new User(adUser);
+				const newUser = new User({ ...adUser, settings: { email: { notification: true, sendAt: '09:00' }, telegram: { notification: false, sendAt: '09:00', chatId: '' }, push: { notification: false, sendAt: '09:00' } } });
 
 				id = newUser._id;
 				await newUser.save();
