@@ -27,14 +27,7 @@ export default async function TeamsPage() {
 					</BreadcrumbItem>
 				</BreadcrumbList>
 			</Breadcrumb>
-			{Array.isArray(teams) ? (
-				<Teams teams={teams} />
-			) : (
-				<div>
-					{teams.error}
-					<Link href="/teams/new">Create a team</Link>
-				</div>
-			)}
+			<Teams teams={teams} />
 		</div>
 	);
 }
