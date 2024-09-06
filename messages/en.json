@@ -24,6 +24,8 @@
         "title": "Teams",
         "empty": "No teams yet",
         "create": "Create a new team",
+        "subtitle": "Your teams",
+        "description": "All the teams you are part of.",
         "table": {
             "name": "Name",
             "members": "Members",

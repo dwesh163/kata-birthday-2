@@ -24,6 +24,8 @@
         "title": "Équipes",
         "empty": "Aucune équipe pour le moment",
         "create": "Créer",
+        "subtitle": "Vos équipes",
+        "description": "Toutes les équipes auxquelles vous appartenez.",
         "table": {
             "name": "Nom",
             "members": "Membres",
