@@ -40,10 +40,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			await connectDB();
 
 			if (!(await User.findOne({ email: user.email }))) {
-				const newUser = new User(user);
+				const newUser = new User({ ...user, settings: { email: { notification: true, sendAt: '09:00' }, telegram: { notification: false, sendAt: '09:00', chatId: '' }, push: { notification: false, sendAt: '09:00' } } });
 				await newUser.save();
-			} else {
-				console.log('User already exists');
 			}
 			await mongoose.disconnect();
 
