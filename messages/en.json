@@ -47,7 +47,7 @@
         "owned": "Owned by {owner}",
         "content": {
             "out": "Outside EPFL",
-            "birthday": "{birthday, date, medium}"
+            "birthday": "{birthday, date, ::MMMMd}"
         },
         "table": {
             "name": "Name",
@@ -126,6 +126,10 @@
             "birthday": "Birthday",
             "unit": "Unit",
             "job": "Job"
+        },
+        "content": {
+            "out": "Outside EPFL",
+            "birthday": "{birthday, date, ::MMMMd}"
         }
     }
 }

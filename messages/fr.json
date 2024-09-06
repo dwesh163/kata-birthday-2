@@ -46,7 +46,7 @@
         "invite": "Inviter",
         "owned": "Détenu par {owner}",
         "content": {
-            "birthday": "{birthday, date, medium}",
+            "birthday": "{birthday, date, ::MMMMd}",
             "out": "Hors EPFL"
         },
         "table": {
@@ -126,6 +126,10 @@
             "job": "Fonction",
             "unit": "Unité",
             "birthday": "Anniversaire"
+        },
+        "content": {
+            "birthday": "{birthday, date, ::MMMMd}",
+            "out": "Hors EPFL"
         }
     }
 }
