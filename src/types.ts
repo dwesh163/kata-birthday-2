@@ -19,12 +19,13 @@ export type User = {
 	name: string;
 	email: string;
 	birthday: Date;
-	username: String;
-	jobTitle: String;
-	unit: String;
-	sciper: String;
-	image: String;
+	username: string;
+	jobTitle: string;
+	unit: string;
+	sciper: string;
+	image: string;
 	hasNotification?: boolean;
+	role?: string;
 };
 
 export type ErrorType = {
