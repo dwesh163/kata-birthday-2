@@ -126,7 +126,7 @@ export async function createTeam(name: string, ownerId: string) {
 		const team = new Team({
 			name,
 			owner: owner._id,
-			members: [{ user: owner._id, role: 'superAdmin' }],
+			members: [{ user: owner._id, role: 'superadmin' }],
 		});
 
 		await team.save();

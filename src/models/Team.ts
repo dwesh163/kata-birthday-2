@@ -8,7 +8,7 @@ const TeamSchema = new Schema({
 	members: [
 		{
 			user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-			role: { type: String, enum: ['member', 'admin', 'superAdmin'], default: 'member' },
+			role: { type: String, enum: ['member', 'admin', 'superadmin'], default: 'member' },
 			hasNotification: { type: Boolean, default: true },
 			isMuted: { type: Boolean, default: false },
 		},
