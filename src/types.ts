@@ -28,6 +28,13 @@ export type User = {
 	role?: string;
 };
 
+export type BirthdayType = {
+	name: string;
+	birthday: Date;
+	jobTitle: string;
+	unit: string;
+};
+
 export type SettingsType = {
 	email: {
 		notification: boolean;
