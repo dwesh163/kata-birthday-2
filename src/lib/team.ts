@@ -85,6 +85,7 @@ export async function getTeam(teamId: string, userId: string) {
 					id: memberUser._id.toString(),
 					email: memberUser.email,
 					unit: memberUser.unit,
+					birthday: new Date(new Date(memberUser.birthday).setFullYear(1970)),
 				};
 			})
 		);
@@ -139,17 +140,19 @@ export async function createTeam(name: string, ownerId: string) {
 	}
 }
 
-export async function addUserToTeam(userId: string, teamId: string, role: string) {
+export async function addUserToTeam(userId: string, reqUserId: string, teamId: string, role: string) {
 	try {
 		await connectDB();
+
+		const reqUser = await User.findOne({ sciper: reqUserId });
 
 		const user = await User.findById(userId);
 		const team = await Team.findOne({
 			_id: teamId,
 			members: {
 				$elemMatch: {
-					user: user._id,
-					role: 'admin',
+					user: reqUser._id,
+					role: { $in: ['superadmin', 'admin'] },
 				},
 			},
 		});
