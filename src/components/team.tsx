@@ -22,10 +22,10 @@ export default function Team({ team, users }: { team: { name: string; owner: str
 			<Table className="mt-5">
 				<TableHeader>
 					<TableRow className="hover:bg-white">
-						<TableHead className="w-[25%]">{t('table.name')}</TableHead>
-						<TableHead className="w-max">{t('table.birthday')}</TableHead>
-						<TableHead className="w-3/5">{t('table.unit')}</TableHead>
-						<TableHead>{t('table.role')}</TableHead>
+						<TableHead className="w-[30%]">{t('table.name')}</TableHead>
+						<TableHead className="">{t('table.birthday')}</TableHead>
+						<TableHead className="">{t('table.unit')}</TableHead>
+						<TableHead className="w-[150px]">{t('table.role')}</TableHead>
 						<TableHead className="w-[150px]">{t('table.actions')}</TableHead>
 					</TableRow>
 				</TableHeader>
