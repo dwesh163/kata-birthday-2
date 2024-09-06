@@ -3,15 +3,15 @@ import { updateSettings } from '@/lib/settings';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
-	const { settings } = await req.json();
+	const settings = await req.json();
 	const session = await auth();
 
 	if (!session) {
-		return NextResponse.json('Not authenticated', { status: 401 });
+		return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
 	}
 
 	if (!settings) {
-		return NextResponse.json('No settings provided', { status: 400 });
+		return NextResponse.json({ error: 'No settings provided' }, { status: 400 });
 	}
 
 	const update = await updateSettings(session.user.email, { email: { notification: settings.email.notification, sendAt: settings.email.sendAt }, telegram: { notification: settings.telegram.notification, sendAt: settings.telegram.sendAt, chatId: settings.telegram.chatId }, push: { notification: settings.push.notification, sendAt: settings.push.sendAt } });
@@ -20,5 +20,5 @@ export async function POST(req: NextRequest) {
 		return NextResponse.json(update.error, { status: 500 });
 	}
 
-	return NextResponse.json('success');
+	return NextResponse.json({ error: 'success' });
 }
