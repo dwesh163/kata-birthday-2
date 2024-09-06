@@ -58,8 +58,14 @@ export default function Settings({ session, baseSettings }: { session: Session; 
 		}));
 	};
 
+	const handleChatIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setSettings((prevSettings) => ({
+			...prevSettings,
+			telegram: { ...prevSettings.telegram, chatId: e.target.value },
+		}));
+	};
+
 	const saveSettings = () => {
-		console.log('settings', settings);
 		fetch('/api/settings', {
 			method: 'POST',
 			headers: {
@@ -71,8 +77,6 @@ export default function Settings({ session, baseSettings }: { session: Session; 
 				return response.json();
 			})
 			.then((data) => {
-				console.log(data);
-
 				if (data.error) {
 					toast(t(data.error));
 					return;
@@ -142,7 +146,7 @@ export default function Settings({ session, baseSettings }: { session: Session; 
 							</CardTitle>
 						</CardHeader>
 						<CardContent className="flex flex-col gap-3">
-							<Input type="text" placeholder="Telegram" disabled={!settings.telegram.notification} />
+							<Input type="text" placeholder="Telegram ID" value={settings.telegram.chatId} onChange={handleChatIdChange} disabled={!settings.telegram.notification} />
 							<div className="flex items-center gap-2">
 								<p>Send at :</p>
 								<Input type="time" disabled={!settings.telegram.notification} value={settings.telegram.sendAt} onChange={handleTelegramSendAtChange} className="max-w-[110px]" />
