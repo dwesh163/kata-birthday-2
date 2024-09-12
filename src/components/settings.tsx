@@ -107,7 +107,7 @@ export default function Settings({ session, baseSettings }: { session: Session; 
 						<div className="space-y-1">
 							<div className="text-3xl font-bold">{session.user.name}</div>
 							<div className="text-xl text-muted-foreground">
-								{session.user.jobTitle} - {session.user.unit}
+								{session.user.jobTitle} &mdash; {session.user.unit}
 							</div>
 						</div>
 					</div>
