@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
 				await newUser.save();
 			}
 
-			await addUserToTeam(id, team._id, 'member');
+			await addUserToTeam(id, session.user.sciper, team._id, 'member');
 		}
 
 		return NextResponse.json({ message: 'Team created successfully' });
