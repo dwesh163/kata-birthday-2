@@ -11,7 +11,6 @@ export async function getBirthdays(sciper: string): Promise<BirthdayType[]> {
 		throw new Error('User not found');
 	}
 
-	// Find teams where the user is a member and has notifications enabled
 	const teams = await Team.find({
 		members: {
 			$elemMatch: {
@@ -20,36 +19,30 @@ export async function getBirthdays(sciper: string): Promise<BirthdayType[]> {
 			},
 		},
 	})
-		.select('members') // Only select members
+		.select('members')
 		.populate({
-			path: 'members.user', // Populate the user information in members
-			select: 'name birthday jobTitle unit', // Select relevant fields
+			path: 'members.user',
+			select: 'name birthday jobTitle unit',
 		});
 
-	// Use a Set to store unique user IDs
 	const uniqueUsers = new Set();
 
-	// Array to store the birthday information
 	const birthdayList: BirthdayType[] = [];
 
-	// Loop through each team and collect member info
 	teams.forEach((team) => {
-		team.members.forEach((member) => {
+		team.members.forEach((member: { user: { _id: { toString: () => unknown }; name: any; birthday: string | number | Date; jobTitle: any; unit: any } }) => {
 			if (member.user && !uniqueUsers.has(member.user._id.toString())) {
 				uniqueUsers.add(member.user._id.toString());
 
-				// Push the user info to birthdayList
 				birthdayList.push({
 					name: member.user.name,
-					birthday: member.user.birthday,
+					birthday: new Date(new Date(member.user.birthday).setFullYear(1970)),
 					jobTitle: member.user.jobTitle,
 					unit: member.user.unit,
 				});
 			}
 		});
 	});
-
-	console.log(birthdayList); // To log the result
 
 	return birthdayList;
 }
