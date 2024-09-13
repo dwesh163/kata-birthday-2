@@ -12,7 +12,7 @@ export default async function TeamsPage() {
 	if (!session) {
 		redirect('/login');
 	}
-	const teams = (await getTeams(session?.user?.id as string)) as TeamsType[] | ErrorType;
+	const teams = (await getTeams(session.user.sciper)) as TeamsType[];
 
 	return (
 		<div className="w-full">

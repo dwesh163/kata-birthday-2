@@ -2,13 +2,13 @@ import mongoose from 'mongoose';
 import connectDB from '@/lib/mongo';
 import { Team } from '@/models/Team';
 import { User } from '@/models/User';
+import { TeamsType } from '@/types';
 
-export async function getTeams(userId: string) {
+export async function getTeams(sciper: string): Promise<TeamsType[]> {
 	try {
 		await connectDB();
 
-		const user = await User.findOne({ id: userId });
-
+		const user = await User.findOne({ sciper });
 		const teams = await Team.find({
 			members: {
 				$elemMatch: {
@@ -24,7 +24,7 @@ export async function getTeams(userId: string) {
 			});
 
 		if (teams.length === 0) {
-			return { error: 'No teams found', status: 404 };
+			return [];
 		}
 
 		const userTeams = await Promise.all(
@@ -48,17 +48,17 @@ export async function getTeams(userId: string) {
 		return userTeams;
 	} catch (error) {
 		console.error('Error while retrieving user teams with roles:', error);
-		return { error: 'Error while retrieving user teams with roles', status: 500 };
+		return [];
 	} finally {
 		await mongoose.disconnect();
 	}
 }
 
-export async function getTeam(teamId: string, userId: string) {
+export async function getTeam(teamId: string, sciper: string) {
 	try {
 		await connectDB();
 
-		const user = await User.findOne({ id: userId });
+		const user = await User.findOne({ sciper: sciper });
 		let team = await Team.findOne({
 			_id: teamId,
 			members: {
@@ -109,11 +109,11 @@ export async function getTeam(teamId: string, userId: string) {
 	}
 }
 
-export async function createTeam(name: string, ownerId: string) {
+export async function createTeam(name: string, sciper: string) {
 	try {
 		await connectDB();
 
-		const owner = await User.findOne({ id: ownerId });
+		const owner = await User.findOne({ sciper: sciper });
 		if (!owner) {
 			return { error: 'Owner not found' };
 		}
@@ -140,11 +140,11 @@ export async function createTeam(name: string, ownerId: string) {
 	}
 }
 
-export async function addUserToTeam(userId: string, reqUserId: string, teamId: string, role: string) {
+export async function addUserToTeam(userId: string, reqUserSciper: string, teamId: string, role: string) {
 	try {
 		await connectDB();
 
-		const reqUser = await User.findOne({ sciper: reqUserId });
+		const reqUser = await User.findOne({ sciper: reqUserSciper });
 
 		const user = await User.findById(userId);
 		const team = await Team.findOne({
