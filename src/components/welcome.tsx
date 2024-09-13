@@ -5,8 +5,10 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Switch } from '@/components/ui/switch';
 import { FilePen, PenIcon } from 'lucide-react';
+import { BirthdayType, SettingsType, TeamsType } from '@/types';
+import Link from 'next/link';
 
-export default function Welcome() {
+export default function Welcome({ nextBirthdays, teams, settings }: { nextBirthdays: BirthdayType[]; teams: TeamsType[]; settings: SettingsType }) {
 	const t = useTranslations('Welcome');
 
 	return (
@@ -18,36 +20,24 @@ export default function Welcome() {
 					</CardHeader>
 					<CardContent>
 						<div className="grid gap-4">
-							<div className="flex items-center gap-4">
-								<Avatar>
-									<AvatarImage src="/placeholder-user.jpg" alt="Avatar" />
-									<AvatarFallback>JD</AvatarFallback>
-								</Avatar>
-								<div>
-									<p className="font-medium">John Doe</p>
-									<p className="text-muted-foreground text-sm">Birthday: June 15</p>
+							{nextBirthdays.map((user, index) => (
+								<div className="flex items-center gap-4" key={'user' + index}>
+									<Avatar>
+										<AvatarImage src="/placeholder-user.jpg" alt="Avatar" />
+										<AvatarFallback>
+											{user.name
+												.split(' ')
+												.slice(0, 2)
+												.map((word) => word.charAt(0).toUpperCase())
+												.join('')}
+										</AvatarFallback>
+									</Avatar>
+									<div>
+										<p className="font-medium">{user.name}</p>
+										<p className="text-muted-foreground text-sm">{t('upcoming.birthday', { birthday: new Date(user.birthday) })}</p>
+									</div>
 								</div>
-							</div>
-							<div className="flex items-center gap-4">
-								<Avatar>
-									<AvatarImage src="/placeholder-user.jpg" alt="Avatar" />
-									<AvatarFallback>SA</AvatarFallback>
-								</Avatar>
-								<div>
-									<p className="font-medium">Sarah Anderson</p>
-									<p className="text-muted-foreground text-sm">Birthday: August 22</p>
-								</div>
-							</div>
-							<div className="flex items-center gap-4">
-								<Avatar>
-									<AvatarImage src="/placeholder-user.jpg" alt="Avatar" />
-									<AvatarFallback>MJ</AvatarFallback>
-								</Avatar>
-								<div>
-									<p className="font-medium">Michael Johnson</p>
-									<p className="text-muted-foreground text-sm">Birthday: November 3</p>
-								</div>
-							</div>
+							))}
 						</div>
 					</CardContent>
 				</Card>
@@ -57,48 +47,32 @@ export default function Welcome() {
 					</CardHeader>
 					<CardContent>
 						<div className="grid gap-4">
-							<div className="flex items-center gap-4">
-								<Avatar>
-									<AvatarImage src="/placeholder-user.jpg" alt="Avatar" />
-									<AvatarFallback>MT</AvatarFallback>
-								</Avatar>
-								<div>
-									<p className="font-medium">Marketing Team</p>
-									<p className="text-muted-foreground text-sm">5 members</p>
+							{teams.map((team, index) => (
+								<div className="flex items-center gap-4" key={'team' + index}>
+									<Avatar>
+										<AvatarImage src="/placeholder-user.jpg" alt="Avatar" />
+										<AvatarFallback>
+											{team.name
+												.split(' ')
+												.slice(0, 2)
+												.map((word) => word.charAt(0).toUpperCase())
+												.join('')}
+										</AvatarFallback>
+									</Avatar>
+									<div>
+										<p className="font-medium">{team.name}</p>
+										<p className="text-muted-foreground text-sm">{team.members} members</p>
+									</div>
+									{team.role.includes('admin') && (
+										<Button asChild variant="ghost" size="icon" className="ml-auto text-gray-400 hover:text-gray-500">
+											<Link href={`/teams/${team.id}`}>
+												<FilePen className="w-5 h-5" />
+												<span className="sr-only">Edit</span>
+											</Link>
+										</Button>
+									)}
 								</div>
-								<Button variant="ghost" size="icon" className="ml-auto text-gray-400 hover:text-gray-500">
-									<FilePen className="w-5 h-5" />
-									<span className="sr-only">Edit</span>
-								</Button>
-							</div>
-							<div className="flex items-center gap-4">
-								<Avatar>
-									<AvatarImage src="/placeholder-user.jpg" alt="Avatar" />
-									<AvatarFallback>DT</AvatarFallback>
-								</Avatar>
-								<div>
-									<p className="font-medium">Design Team</p>
-									<p className="text-muted-foreground text-sm">3 members</p>
-								</div>
-								<Button variant="ghost" size="icon" className="ml-auto text-gray-400 hover:text-gray-500">
-									<FilePen className="w-5 h-5" />
-									<span className="sr-only">Edit</span>
-								</Button>
-							</div>
-							<div className="flex items-center gap-4">
-								<Avatar>
-									<AvatarImage src="/placeholder-user.jpg" alt="Avatar" />
-									<AvatarFallback>ET</AvatarFallback>
-								</Avatar>
-								<div>
-									<p className="font-medium">Engineering Team</p>
-									<p className="text-muted-foreground text-sm">7 members</p>
-								</div>
-								<Button variant="ghost" size="icon" className="ml-auto text-gray-400 hover:text-gray-500">
-									<FilePen className="w-5 h-5" />
-									<span className="sr-only">Edit</span>
-								</Button>
-							</div>
+							))}
 						</div>
 					</CardContent>
 				</Card>
@@ -109,20 +83,16 @@ export default function Welcome() {
 					<CardContent>
 						<div className="grid gap-4">
 							<div className="flex items-center justify-between">
-								<p>{t('settings.upcoming')}</p>
-								<Switch />
-							</div>
-							<div className="flex items-center justify-between">
-								<p>{t('settings.reminders')}</p>
-								<Switch />
-							</div>
-							<div className="flex items-center justify-between">
 								<p>{t('settings.email')}</p>
-								<Switch />
+								<Switch checked={settings.email.notification} />
+							</div>
+							<div className="flex items-center justify-between">
+								<p>{t('settings.telegram')}</p>
+								<Switch checked={settings.telegram.notification} />
 							</div>
 							<div className="flex items-center justify-between">
 								<p>{t('settings.push')}</p>
-								<Switch />
+								<Switch checked={settings.push.notification} />
 							</div>
 						</div>
 					</CardContent>
