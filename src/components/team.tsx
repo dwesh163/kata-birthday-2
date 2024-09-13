@@ -2,12 +2,12 @@
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useTranslations } from 'next-intl';
-import { User } from '@/types';
+import { UserType } from '@/types';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Bell, BellOff, FilePen, LogOut, Trash } from 'lucide-react';
 
-export default function Team({ team, users }: { team: { name: string; owner: string }; users: User[] }) {
+export default function Team({ team, users }: { team: { name: string; owner: string }; users: UserType[] }) {
 	const t = useTranslations('Team');
 	const roles = ['superadmin', 'admin', 'member'];
 

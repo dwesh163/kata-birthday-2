@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Bell, BellOff, FilePen, LogOut, Plus, Trash } from 'lucide-react';
 
-export default function Teams({ teams }: { teams: TeamsType[] | ErrorType }) {
+export default function Teams({ teams }: { teams: TeamsType[] }) {
 	const router = useRouter();
 	const t = useTranslations('Teams');
 
