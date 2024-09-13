@@ -1,17 +1,17 @@
 {
     "Welcome": {
-        "title": "Bourjour le monde!",
         "teams": "Équipes",
         "settings": {
             "title": "Paramètres",
             "upcoming": "Prochains anniversaires",
-            "reminders": "Rappels d'anniversaires",
+            "telegram": "Notifications par Telegram",
             "email": "Notifications par e-mail",
             "push": "Notifications push"
         },
         "upcoming": {
             "title": "Prochains anniversaires",
-            "empty": "Aucun anniversaire à venir dans les 30 prochains jours."
+            "empty": "Aucun anniversaire à venir dans les 30 prochains jours.",
+            "birthday": "{birthday, date, ::MMMMd}"
         }
     },
     "Sidebar": {

@@ -1,17 +1,16 @@
 {
     "Welcome": {
-        "title": "Hello world!",
         "teams": "Teams",
         "settings": {
             "title": "Settings",
-            "upcoming": "Upcoming Birthdays",
-            "reminders": "Birthdays Reminders",
+            "telegram": "Telegram Notifications",
             "email": "Email Notifications",
             "push": "Push Notifications"
         },
         "upcoming": {
             "title": "Upcoming Birthdays",
-            "empty": "No upcoming birthdays in the next 30 days."
+            "empty": "No upcoming birthdays in the next 30 days.",
+            "birthday": "{birthday, date, ::MMMMd}"
         }
     },
     "Sidebar": {
