@@ -3,7 +3,7 @@ import connectDB from '@/lib/mongo';
 import { addUserToTeam, createTeam } from '@/lib/team';
 import { User } from '@/models/User';
 import { NextRequest, NextResponse } from 'next/server';
-import { User as UserType } from '@/types';
+import { UserType } from '@/types';
 import { getUser } from '@/lib/user';
 
 export async function POST(req: NextRequest) {
