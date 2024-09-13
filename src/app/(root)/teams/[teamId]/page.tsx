@@ -16,7 +16,7 @@ export default async function TeamPage({ params }: { params: { teamId: string } 
 	const team: TeamType | ErrorType = await getTeam(params.teamId as string, session?.user?.sciper as string);
 
 	if ('error' in team) {
-		return <div>{team.error}</div>;
+		return <div className="w-full h-full flex justify-center items-center">{team.error}</div>;
 	}
 
 	if (!team) {
