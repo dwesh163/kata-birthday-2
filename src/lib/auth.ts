@@ -43,7 +43,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 				const newUser = new User({ ...user, settings: { email: { notification: true, sendAt: '09:00' }, telegram: { notification: false, sendAt: '09:00', chatId: '' }, push: { notification: false, sendAt: '09:00' } } });
 				await newUser.save();
 			}
-			await mongoose.disconnect();
 
 			return true;
 		},
@@ -64,7 +63,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 					image: dbUser.image as string,
 				};
 			}
-			await mongoose.disconnect();
 
 			return session;
 		},
