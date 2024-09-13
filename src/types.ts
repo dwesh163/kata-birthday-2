@@ -11,10 +11,10 @@ export type TeamType = {
 	id: string;
 	name: string;
 	owner: string;
-	members: User[];
+	members: UserType[];
 };
 
-export type User = {
+export type UserType = {
 	id: string;
 	name: string;
 	email: string;
@@ -33,6 +33,7 @@ export type BirthdayType = {
 	birthday: Date;
 	jobTitle: string;
 	unit: string;
+	sciper?: string;
 };
 
 export type SettingsType = {
@@ -57,7 +58,7 @@ export type ErrorType = {
 
 declare module 'next-auth' {
 	interface Session {
-		user: User;
+		user: UserType;
 		expires: string;
 	}
 }
