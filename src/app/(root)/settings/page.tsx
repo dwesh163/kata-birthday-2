@@ -12,7 +12,7 @@ export default async function SettingsPage() {
 		return redirect('/login');
 	}
 
-	const settings = await getSettings(session?.user?.email as string);
+	const settings = await getSettings(session?.user.sciper);
 
 	return (
 		<div className="w-full h-full">
