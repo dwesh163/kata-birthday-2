@@ -10,9 +10,12 @@ import { SettingsType } from '@/types';
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Button } from './ui/button';
+import { useRouter } from 'next/navigation';
 
 export default function Settings({ session, baseSettings }: { session: Session; baseSettings: SettingsType }) {
 	const t = useTranslations('Settings');
+
+	const router = useRouter();
 
 	const [settings, setSettings] = useState(baseSettings);
 
@@ -77,12 +80,9 @@ export default function Settings({ session, baseSettings }: { session: Session; 
 				return response.json();
 			})
 			.then((data) => {
-				if (data.error) {
-					toast(t(data.error));
-					return;
-				} else {
-					toast(t('success'));
-				}
+				toast(t(data.error));
+				router.refresh();
+				return;
 			})
 			.catch((error) => {
 				console.error('Failed to save settings:', error);
