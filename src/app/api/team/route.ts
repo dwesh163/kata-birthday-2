@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
 			return NextResponse.json({ message: 'Invalid team name' }, { status: 400 });
 		}
 
-		const team = await createTeam(name, session.user.id);
+		const team = await createTeam(name, session.user.sciper);
 
 		if (!team) {
 			return NextResponse.json({ message: 'Error while creating team' }, { status: 500 });
