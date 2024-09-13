@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
 		return NextResponse.json({ error: 'No settings provided' }, { status: 400 });
 	}
 
-	const update = await updateSettings(session.user.email, { email: { notification: settings.email.notification, sendAt: settings.email.sendAt }, telegram: { notification: settings.telegram.notification, sendAt: settings.telegram.sendAt, chatId: settings.telegram.chatId }, push: { notification: settings.push.notification, sendAt: settings.push.sendAt } });
+	const update = await updateSettings(session.user.sciper, { email: { notification: settings.email.notification, sendAt: settings.email.sendAt }, telegram: { notification: settings.telegram.notification, sendAt: settings.telegram.sendAt, chatId: settings.telegram.chatId }, push: { notification: settings.push.notification, sendAt: settings.push.sendAt } });
 
 	if (update.error != '') {
 		return NextResponse.json(update.error, { status: 500 });

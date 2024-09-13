@@ -2,19 +2,19 @@ import { User } from '@/models/User';
 import { ErrorType, SettingsType } from '@/types';
 import connectDB from './mongo';
 
-export default async function getSettings(email: string): Promise<SettingsType> {
+export default async function getSettings(sciper: string): Promise<SettingsType> {
 	await connectDB();
-	const user = await User.findOne({ email: email });
+	const user = await User.findOne({ sciper: sciper });
 
-	console.log(user.settings);
+	console.log('getSettings:', user);
 
 	return user.settings;
 }
 
-export async function updateSettings(email: string, settings: SettingsType): Promise<ErrorType> {
+export async function updateSettings(sciper: string, settings: SettingsType): Promise<ErrorType> {
 	try {
 		await connectDB();
-		await User.updateOne({ email: email }, { settings });
+		await User.updateOne({ sciper: sciper }, { settings });
 	} catch (error) {
 		return { error: 'internal', status: 500 };
 	}
