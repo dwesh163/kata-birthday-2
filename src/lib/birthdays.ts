@@ -22,27 +22,44 @@ export async function getBirthdays(sciper: string): Promise<BirthdayType[]> {
 		.select('members')
 		.populate({
 			path: 'members.user',
-			select: 'name birthday jobTitle unit',
+			select: 'name birthday jobTitle unit sciper',
 		});
-
-	const uniqueUsers = new Set();
 
 	const birthdayList: BirthdayType[] = [];
 
 	teams.forEach((team) => {
-		team.members.forEach((member: { user: { _id: { toString: () => unknown }; name: any; birthday: string | number | Date; jobTitle: any; unit: any } }) => {
-			if (member.user && !uniqueUsers.has(member.user._id.toString())) {
-				uniqueUsers.add(member.user._id.toString());
-
+		team.members.forEach((member: { user: { sciper: string; name: string; birthday: Date; jobTitle: string; unit: string } }) => {
+			if (member.user && !birthdayList.some((birthday) => birthday.sciper === member.user.sciper) && user.sciper !== member.user.sciper) {
 				birthdayList.push({
 					name: member.user.name,
-					birthday: new Date(new Date(member.user.birthday).setFullYear(1970)),
+					birthday: member.user.birthday,
 					jobTitle: member.user.jobTitle,
 					unit: member.user.unit,
+					sciper: member.user.sciper,
 				});
 			}
 		});
 	});
 
 	return birthdayList;
+}
+
+export async function getNextBirthday(sciper: string, number: number): Promise<BirthdayType[] | null> {
+	const birthdays = await getBirthdays(sciper);
+	const today = new Date();
+
+	const adjustDate = (birthday: Date) => {
+		const adjusted = new Date(today.getFullYear(), birthday.getMonth(), birthday.getDate());
+		return adjusted < today ? new Date(today.getFullYear() + 1, birthday.getMonth(), birthday.getDate()) : adjusted;
+	};
+
+	const nextBirthdays = birthdays
+		.map((b) => ({ ...b, adjustedBirthday: adjustDate(new Date(b.birthday)) }))
+		.filter((b) => b.adjustedBirthday >= today)
+		.sort((a, b) => a.adjustedBirthday.getTime() - b.adjustedBirthday.getTime())
+		.slice(0, number);
+
+	console.log('nextBirthdays', nextBirthdays);
+
+	return nextBirthdays;
 }
