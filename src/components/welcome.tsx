@@ -7,9 +7,11 @@ import { Switch } from '@/components/ui/switch';
 import { FilePen, PenIcon } from 'lucide-react';
 import { BirthdayType, SettingsType, TeamsType } from '@/types';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Welcome({ nextBirthdays, teams, settings }: { nextBirthdays: BirthdayType[]; teams: TeamsType[]; settings: SettingsType }) {
 	const t = useTranslations('Welcome');
+	const router = useRouter();
 
 	return (
 		<div className="flex-1 bg-background p-6 md:p-10">
@@ -84,15 +86,15 @@ export default function Welcome({ nextBirthdays, teams, settings }: { nextBirthd
 						<div className="grid gap-4">
 							<div className="flex items-center justify-between">
 								<p>{t('settings.email')}</p>
-								<Switch checked={settings.email.notification} />
+								<Switch checked={settings.email.notification} onCheckedChange={() => router.push('/settings')} />
 							</div>
 							<div className="flex items-center justify-between">
 								<p>{t('settings.telegram')}</p>
-								<Switch checked={settings.telegram.notification} />
+								<Switch checked={settings.telegram.notification} onCheckedChange={() => router.push('/settings')} />
 							</div>
 							<div className="flex items-center justify-between">
 								<p>{t('settings.push')}</p>
-								<Switch checked={settings.push.notification} />
+								<Switch checked={settings.push.notification} onCheckedChange={() => router.push('/settings')} />
 							</div>
 						</div>
 					</CardContent>
