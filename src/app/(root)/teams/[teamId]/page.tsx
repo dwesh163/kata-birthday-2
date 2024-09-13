@@ -3,7 +3,7 @@
 import Team from '@/components/team';
 import { auth } from '@/lib/auth';
 import { getTeam } from '@/lib/team';
-import { ErrorType, TeamType, User } from '@/types';
+import { ErrorType, TeamType, UserType } from '@/types';
 import { redirect } from 'next/navigation';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 
@@ -13,7 +13,7 @@ export default async function TeamPage({ params }: { params: { teamId: string } 
 		redirect('/login');
 	}
 
-	const team: TeamType | ErrorType = await getTeam(params.teamId as string, session?.user?.id as string);
+	const team: TeamType | ErrorType = await getTeam(params.teamId as string, session?.user?.sciper as string);
 
 	if ('error' in team) {
 		return <div>{team.error}</div>;
@@ -23,7 +23,7 @@ export default async function TeamPage({ params }: { params: { teamId: string } 
 		return <div>No teams found</div>;
 	}
 
-	const users = team.members as User[];
+	const users = team.members as UserType[];
 
 	return (
 		<div className="w-full">
