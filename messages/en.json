@@ -68,6 +68,22 @@
             "superadmin": "Super Admin",
             "admin": "Admin",
             "member": "Member"
+        },
+        "import": {
+            "one": {
+                "title": "Import",
+                "description": "Select the user you want to import.",
+                "submit": "Import",
+                "placeholder": "Search user...",
+                "select": "Select"
+            },
+            "unit": {
+                "title": "Import from Unit",
+                "description": "Select the unit you want to import users from.",
+                "submit": "Import",
+                "placeholder": "Search units...",
+                "select": "Select"
+            }
         }
     },
     "NewTeam": {
