@@ -5,20 +5,88 @@ import { useTranslations } from 'next-intl';
 import { UserType } from '@/types';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
 import { Bell, BellOff, FilePen, LogOut, Trash } from 'lucide-react';
+import { UserSearch } from './userSearch';
+import { UnitSearch } from './unitSearch';
+import { useRouter, useParams } from 'next/navigation';
+import { useState } from 'react';
 
 export default function Team({ team, users }: { team: { name: string; owner: string }; users: UserType[] }) {
+	const [isAddUserDialogOpen, setIsAddUserDialogOpen] = useState(false);
 	const t = useTranslations('Team');
 	const roles = ['superadmin', 'admin', 'member'];
+	const router = useRouter();
 
 	const handleRoleChange = (sciper: string, role: string) => {
 		console.log(role);
 	};
 
+	const params = useParams();
+
+	function onUserSelect(user: UserType) {
+		fetch(`/api/teams/${params.teamId}/user`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(user),
+		}).then((response) => {
+			if (!response.ok) {
+				console.error('Failed to add user:', response.statusText);
+			} else {
+				router.refresh();
+				setIsAddUserDialogOpen(false);
+			}
+		});
+	}
+
+	function removeUser(sciper: string) {
+		fetch(`/api/teams/${params.teamId}/user/${sciper}`, {
+			method: 'DELETE',
+		}).then((response) => {
+			if (!response.ok) {
+				console.error('Failed to remove user:', response.statusText);
+			} else {
+				router.refresh();
+			}
+		});
+	}
+
 	return (
 		<div className="flex-1 bg-background p-6 md:p-10 md:pt-4 pt-1">
-			<h1 className="font-semibold text-[30px]">{team.name}</h1>
-			<p className="text-sm">{t('owned', { owner: team.owner })}</p>
+			<div className="flex justify-between items-center">
+				<div>
+					<h1 className="font-semibold text-[30px]">{team.name}</h1>
+					<p className="text-sm">{t('owned', { owner: team.owner })}</p>
+				</div>
+				<div className="flex items-center justify-center gap-2">
+					<Dialog open={isAddUserDialogOpen} onOpenChange={setIsAddUserDialogOpen}>
+						<DialogTrigger asChild>
+							<Button>{t('import.one.title')}</Button>
+						</DialogTrigger>
+						<DialogContent className="sm:max-w-[625px] gap-0">
+							<DialogHeader>
+								<DialogTitle>{t('import.one.title')}</DialogTitle>
+								<DialogDescription>{t('import.one.description')}</DialogDescription>
+							</DialogHeader>
+							<UserSearch onSelect={onUserSelect} />
+						</DialogContent>
+					</Dialog>
+					<Dialog>
+						<DialogTrigger asChild>
+							<Button disabled>{t('import.unit.title')}</Button>
+						</DialogTrigger>
+						<DialogContent className="sm:max-w-[625px] gap-0">
+							<DialogHeader>
+								<DialogTitle>{t('import.unit.title')}</DialogTitle>
+								<DialogDescription>{t('import.unit.description')}</DialogDescription>
+							</DialogHeader>
+							<UnitSearch />
+						</DialogContent>
+					</Dialog>
+				</div>
+			</div>
 			<Table className="mt-5">
 				<TableHeader>
 					<TableRow className="hover:bg-white">
@@ -68,7 +136,7 @@ export default function Team({ team, users }: { team: { name: string; owner: str
 										<TooltipProvider delayDuration={300}>
 											<Tooltip>
 												<TooltipTrigger asChild>
-													<Button variant="outline" size="icon">
+													<Button variant="outline" size="icon" onClick={() => removeUser(user.sciper)}>
 														<LogOut className="h-4 w-4" />
 													</Button>
 												</TooltipTrigger>
