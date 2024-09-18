@@ -179,20 +179,50 @@ export async function addUserToTeam(userId: string, reqUserSciper: string, teamI
 	}
 }
 
-export async function removeUserFromTeam(userId: string, teamId: string) {
+export async function removeUserFromTeam(sciper: string, reqUserSciper: string, teamId: string) {
 	try {
 		await connectDB();
 
+		const user = await User.findOne({ sciper: sciper });
+		const reqUser = await User.findOne({ sciper: reqUserSciper });
+
+		if (!user || !reqUser) {
+			return { error: 'User not found' };
+		}
+
+		if (user._id.toString() === reqUser._id.toString()) {
+			return { error: 'Cannot remove yourself from the team' };
+		}
+
+		await connectDB();
+
 		const team = await Team.findOne({
-			$and: [{ _id: teamId }, { 'members.user': userId }],
-			$or: [{ 'members.hasNotification': true }, { 'members.isMuted': false }],
+			_id: teamId,
+			members: {
+				$elemMatch: {
+					user: reqUser._id,
+					role: { $in: ['superadmin', 'admin'] },
+				},
+			},
 		});
 
 		if (!team) {
 			return { error: 'Team not found' };
 		}
 
-		const updatedMembers = team.members.filter((member: { user: { _id: { toString: () => string } } }) => member.user.toString() !== userId);
+		if (team.owner.toString() === user._id.toString()) {
+			return { error: 'Cannot remove owner from the team' };
+		}
+
+		const role = await getRole(reqUser.sciper, teamId);
+
+		if (role !== 'superadmin' && role !== 'admin') {
+			return { error: 'User not authorized to remove user from team' };
+		}
+
+		team.members.map((member: { user: { _id: { toString: () => string } } }) => console.log('member:', member.user._id.toString()));
+
+		const updatedMembers = team.members.filter((member: { user: { _id: { toString: () => string } } }) => member.user._id.toString() !== user._id.toString());
 		if (updatedMembers.length === team.members.length) {
 			return { error: 'User not found in team' };
 		}
