@@ -3,6 +3,7 @@ import connectDB from '@/lib/mongo';
 import { Team } from '@/models/Team';
 import { User } from '@/models/User';
 import { TeamsType } from '@/types';
+import { getRole } from './user';
 
 export async function getTeams(sciper: string): Promise<TeamsType[]> {
 	try {
@@ -86,6 +87,7 @@ export async function getTeam(teamId: string, sciper: string) {
 					email: memberUser.email,
 					unit: memberUser.unit,
 					birthday: new Date(new Date(memberUser.birthday).setFullYear(1970)),
+					sciper: memberUser.sciper,
 				};
 			})
 		);
