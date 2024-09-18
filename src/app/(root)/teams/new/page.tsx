@@ -12,7 +12,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
-import { User } from '@/types';
+import { UserType } from '@/types';
 import { LogOut, Plus } from 'lucide-react';
 import { UnitSearch } from '@/components/unitSearch';
 import { UserSearch } from '@/components/userSearch';
@@ -25,7 +25,7 @@ const formSchema = z.object({
 });
 
 export default function NewTeamPage() {
-	const [users, setUsers] = useState<User[]>([]);
+	const [users, setUsers] = useState<UserType[]>([]);
 
 	const t = useTranslations('NewTeam');
 	const router = useRouter();
@@ -38,10 +38,7 @@ export default function NewTeamPage() {
 	});
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
-		console.log(values);
-		console.log(users);
-
-		fetch('/api/team', {
+		fetch('/api/teams', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -59,7 +56,7 @@ export default function NewTeamPage() {
 		});
 	}
 
-	function onUserSelect(user: User) {
+	function onUserSelect(user: UserType) {
 		if (users.find((u) => u.email === user.email)) {
 			return;
 		}
