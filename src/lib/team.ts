@@ -8,7 +8,7 @@ export async function getTeams(sciper: string): Promise<TeamsType[]> {
 	try {
 		await connectDB();
 
-		const user = await User.findOne({ sciper });
+		const user = await User.findOne({ sciper: sciper });
 		const teams = await Team.find({
 			members: {
 				$elemMatch: {
